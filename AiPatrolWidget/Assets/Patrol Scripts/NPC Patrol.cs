@@ -17,7 +17,7 @@ public class NPCPatrol : MonoBehaviour
     [SerializeField]
     SplineContainer splinePath;
 
-    float walkSpeed = 1f;
+    float walkSpeed = 5f;
     float stepLength = 0.05f;
     float splineLength;
 
@@ -37,12 +37,16 @@ public class NPCPatrol : MonoBehaviour
         spawnedNPC = Instantiate(npc, firstPos, Quaternion.LookRotation(firstDir));
         splineLength = splinePath.CalculateLength();
 
+        //Increase knotRadius automatically to accomodate high walk speeds
+        knotRadius *= walkSpeed;
+
         knots = splinePath.Spline.ToArray();
     }
 
     void Update()
-    {
-        distancePercent += walkSpeed * Time.deltaTime / splineLength;
+    {   
+        //Increase distance the NPC is along the spline (Divided by 2 to even out calculations along spline ends)
+        distancePercent += (walkSpeed * Time.deltaTime / splineLength) / 2;
 
         if (distancePercent > 1.0f) { return; }
 
@@ -71,8 +75,9 @@ public class NPCPatrol : MonoBehaviour
             }
             lastActiveKnot = (int)closestKnot;
         }
-        
-        
+
+        //Increase distance the NPC is along the spline (Divided by 2 to even out calculations along spline ends)
+        distancePercent += (walkSpeed * Time.deltaTime / splineLength) / 2;
     }
     Vector3 getDirectionVector(float firstPercent, float secondPercent)
     {
