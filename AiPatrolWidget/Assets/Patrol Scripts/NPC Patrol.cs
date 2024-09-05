@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -16,13 +17,16 @@ public class NPCPatrol : MonoBehaviour
     [SerializeField]
     SplineContainer splinePath;
 
-    float walkSpeed = 5f;
+    float walkSpeed = 1f;
     float stepLength = 0.05f;
     float splineLength;
 
     float distancePercent = 0;
     Vector3 currentPos, direction;
     Vector3 firstPos, firstDir;
+
+    BezierKnot[] knots;
+    float knotRadius = 0.5f;
 
     void Start()
     {
@@ -31,6 +35,8 @@ public class NPCPatrol : MonoBehaviour
         firstDir = getDirectionVector(0f, 0.01f);
         spawnedNPC = Instantiate(npc, firstPos, Quaternion.LookRotation(firstDir));
         splineLength = splinePath.CalculateLength();
+
+        knots = splinePath.Spline.ToArray();
     }
 
     void Update()
@@ -39,6 +45,7 @@ public class NPCPatrol : MonoBehaviour
 
         if (distancePercent > 1.0f) { return; }
 
+        //NPC Movement
         Vector3 newPos = splinePath.EvaluatePosition(distancePercent);
         newPos.y += instantiationYOffset;
         spawnedNPC.transform.position = newPos;
@@ -49,6 +56,11 @@ public class NPCPatrol : MonoBehaviour
         rotation.z = spawnedNPC.transform.rotation.z;
         spawnedNPC.transform.rotation = rotation;
 
+        //Knot Detection?
+        float closestKnot = splinePath.Spline.ConvertIndexUnit<Spline>(distancePercent, PathIndexUnit.Knot);
+        closestKnot = Mathf.RoundToInt(closestKnot);
+        Debug.Log(closestKnot);
+        
     }
     Vector3 getDirectionVector(float firstPercent, float secondPercent)
     {
@@ -62,4 +74,6 @@ public class NPCPatrol : MonoBehaviour
 
         return direction;
     }
+    
+
 }
