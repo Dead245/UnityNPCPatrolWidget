@@ -22,11 +22,12 @@ public class NPCPatrol : MonoBehaviour
     float splineLength;
 
     float distancePercent = 0;
-    Vector3 currentPos, direction;
+    Vector3 direction;
     Vector3 firstPos, firstDir;
 
     BezierKnot[] knots;
     float knotRadius = 0.05f; //How close the NPC has to be at the point for it to activate an interaction
+    int lastActiveKnot = -1;
 
     void Start()
     {
@@ -65,7 +66,10 @@ public class NPCPatrol : MonoBehaviour
 
         //Activates if NPC is within 'knotRadius' range of the knot, using local spaces
         if (Vector3.Distance(knots[(int)closestKnot].Position, localNPCPosition) <= knotRadius) {
-            Debug.Log("On Knot#: " + closestKnot);
+            if ((int)closestKnot != lastActiveKnot) {
+                activateKnotInteraction((int)closestKnot);
+            }
+            lastActiveKnot = (int)closestKnot;
         }
         
         
@@ -82,6 +86,8 @@ public class NPCPatrol : MonoBehaviour
 
         return direction;
     }
-    
+    void activateKnotInteraction(int knotIndex) {
+        Debug.Log("On Knot#: " + knotIndex);
+    }
 
 }
