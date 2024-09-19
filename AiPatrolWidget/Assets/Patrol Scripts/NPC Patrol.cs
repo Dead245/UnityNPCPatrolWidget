@@ -10,74 +10,90 @@ using UnityEngine.Splines;
 public class NPCPatrol : MonoBehaviour
 {
     [SerializeField]
-    GameObject npc;
+    GameObject[] npcList;
     float instantiationYOffset = 1f;
-    GameObject spawnedNPC;
+    List<GameObject> spawnedNPCs = new List<GameObject>();
 
     [SerializeField]
     SplineContainer splinePath;
 
-    float walkSpeed = 5f;
     float stepLength = 0.05f;
+    float spawnTimer = 5f;
+    int maxNPCs = 3;
     float splineLength;
+
+    float timeSinceLastSpawn = 0;
+    int currentSpawnIndex = 0;
+    int npcListLength;
 
     float distancePercent = 0;
     Vector3 direction;
     Vector3 firstPos, firstDir;
 
     BezierKnot[] knots;
-    float knotRadius = 0.05f; //How close the NPC has to be at the point for it to activate an interaction
-    int lastActiveKnot = -1;
+
+    private struct NPCInfo {
+        GameObject npcObj;
+        float distancePercent;
+        float walkSpeed;
+        float verticalSpawnOffset;
+    }
 
     void Start()
     {
         firstPos = splinePath.EvaluatePosition(0);
         firstPos.y += instantiationYOffset;
         firstDir = getDirectionVector(0f, 0.01f);
-        spawnedNPC = Instantiate(npc, firstPos, Quaternion.LookRotation(firstDir));
-        splineLength = splinePath.CalculateLength();
 
-        //Increase knotRadius automatically to accomodate high walk speeds
-        knotRadius *= walkSpeed;
+        splineLength = splinePath.CalculateLength();
+        npcListLength = npcList.Length;
 
         knots = splinePath.Spline.ToArray();
     }
 
     void Update()
-    {   
-        //Increase distance the NPC is along the spline (Divided by 2 to even out calculations along spline ends)
-        distancePercent += (walkSpeed * Time.deltaTime / splineLength) / 2;
+    {
+        NpcSpawning();
+        foreach (var npc in spawnedNPCs) {
+            //NPC Movement
+            Vector3 newPos = splinePath.EvaluatePosition(distancePercent);
+            newPos.y += instantiationYOffset;
+            npc.transform.position = newPos;
 
-        if (distancePercent > 1.0f) { return; }
+            direction = getDirectionVector(distancePercent, distancePercent + stepLength);
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            rotation.x = npc.transform.rotation.x;
+            rotation.z = npc.transform.rotation.z;
+            npc.transform.rotation = rotation;
 
-        //NPC Movement
-        Vector3 newPos = splinePath.EvaluatePosition(distancePercent);
-        newPos.y += instantiationYOffset;
-        spawnedNPC.transform.position = newPos;
+            //TODO: Rewrite knot detection and movement so that it is seperate per npc.
+            //Also rewrite knot detection to be more consistent.
 
-        direction = getDirectionVector(distancePercent, distancePercent + stepLength);
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        rotation.x = spawnedNPC.transform.rotation.x;
-        rotation.z = spawnedNPC.transform.rotation.z;
-        spawnedNPC.transform.rotation = rotation;
+                //Knot Detection
+           // float closestKnot = splinePath.Spline.ConvertIndexUnit<Spline>(distancePercent, PathIndexUnit.Knot);
+           // closestKnot = Mathf.RoundToInt(closestKnot); //Index of the closest knot on the spline
 
-        //Knot Detection
-        float closestKnot = splinePath.Spline.ConvertIndexUnit<Spline>(distancePercent, PathIndexUnit.Knot);
-        closestKnot = Mathf.RoundToInt(closestKnot); //Index of the closest knot on the spline
+           // Vector3 localNPCPosition = splinePath.transform.InverseTransformPoint(npc.transform.position);
+           // localNPCPosition.y -= instantiationYOffset;
 
-        Vector3 localNPCPosition = splinePath.transform.InverseTransformPoint(spawnedNPC.transform.position);
-        localNPCPosition.y -= instantiationYOffset;
+                //Activates if NPC is within 'knotRadius' range of the knot, using local spaces
+           // if (Vector3.Distance(knots[(int)closestKnot].Position, localNPCPosition) <= knotRadius)
+           // {
+           //     if ((int)closestKnot != lastActiveKnot)
+           //     {
+           //         activateKnotInteraction((int)closestKnot);
+           //     }
+           //     lastActiveKnot = (int)closestKnot;
+           // }
 
-        //Activates if NPC is within 'knotRadius' range of the knot, using local spaces
-        if (Vector3.Distance(knots[(int)closestKnot].Position, localNPCPosition) <= knotRadius) {
-            if ((int)closestKnot != lastActiveKnot) {
-                activateKnotInteraction((int)closestKnot);
-            }
-            lastActiveKnot = (int)closestKnot;
+            //Increase distance the NPC is along the spline (Divided by 2 to even out calculations along spline ends)
+            //distancePercent += (walkSpeed * Time.deltaTime / splineLength) / 2;
         }
+        
 
-        //Increase distance the NPC is along the spline (Divided by 2 to even out calculations along spline ends)
-        distancePercent += (walkSpeed * Time.deltaTime / splineLength) / 2;
+        
+
+        
     }
     Vector3 getDirectionVector(float firstPercent, float secondPercent)
     {
@@ -91,6 +107,22 @@ public class NPCPatrol : MonoBehaviour
 
         return direction;
     }
+
+    void NpcSpawning()
+    {
+        if (timeSinceLastSpawn == 0 || timeSinceLastSpawn >= spawnTimer) {
+            Instantiate(npcList[currentSpawnIndex], firstPos, Quaternion.LookRotation(firstDir));
+            timeSinceLastSpawn = 0;
+            Debug.Log("Spawned NPC.");
+            if (currentSpawnIndex < npcListLength - 1) {
+                currentSpawnIndex++;
+            } else {
+                currentSpawnIndex = 0;
+            }
+        }
+        timeSinceLastSpawn += Time.deltaTime;
+    }
+
     void activateKnotInteraction(int knotIndex) {
         Debug.Log("On Knot#: " + knotIndex);
     }
