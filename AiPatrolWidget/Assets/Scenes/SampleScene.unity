@@ -2165,7 +2165,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd104aa7dd2cf148a06e73cc00cc24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npc: {fileID: 8755730909407763916, guid: 4bb3827cdf622d24d8282b5c092957e0, type: 3}
+  maxNpcs: 5
+  npcList:
+  - npcObj: {fileID: 8755730909407763916, guid: 4bb3827cdf622d24d8282b5c092957e0,
+      type: 3}
+    distancePercent: 0
+    walkSpeed: 5
+    verticalSpawnOffset: 1
+  - npcObj: {fileID: 1910715658157050221, guid: bc4407017df12db47b74ed6bb2030bdf,
+      type: 3}
+    distancePercent: 0
+    walkSpeed: 5
+    verticalSpawnOffset: 1
   splinePath: {fileID: 728373556}
 --- !u!43 &765282030
 Mesh:
