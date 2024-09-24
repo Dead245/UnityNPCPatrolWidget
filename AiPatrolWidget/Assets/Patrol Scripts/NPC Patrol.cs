@@ -72,7 +72,10 @@ public class NPCPatrol : MonoBehaviour
                 rotation.x = npc.npcObj.transform.rotation.x;
                 rotation.z = npc.npcObj.transform.rotation.z;
                 npc.npcObj.transform.rotation = rotation;
-                npc.distancePercent += newStepLength;
+            }
+            npc.distancePercent += newStepLength;
+            if (splinePath.Spline.Closed && npc.distancePercent > 1) {
+                npc.distancePercent -= 1;
             }
             //TODO: Rewrite knot detection so that it is seperate per npc.
             //Also rewrite knot detection to be more consistent.
@@ -110,8 +113,10 @@ public class NPCPatrol : MonoBehaviour
 
         _firstPos = splinePath.EvaluatePosition(firstPercent);
 
-        if(secondPercent > 1) secondPercent = 1;
-
+        if (secondPercent > 1 && splinePath.Spline.Closed) {
+                secondPercent = 1 - secondPercent;
+        }
+        
         _secondPos = splinePath.EvaluatePosition(secondPercent);
 
         direction = _secondPos - _firstPos;
