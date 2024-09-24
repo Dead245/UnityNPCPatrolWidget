@@ -1626,8 +1626,8 @@ MonoBehaviour:
     - Mode: 2
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.10730813
         T: 0.03448276
       - Distance: 0.23836699
@@ -1689,8 +1689,8 @@ MonoBehaviour:
     - Mode: 2
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.23153216
         T: 0.03448276
       - Distance: 0.4594741
@@ -1752,8 +1752,8 @@ MonoBehaviour:
     - Mode: 2
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.22942457
         T: 0.03448276
       - Distance: 0.45329285
@@ -1815,8 +1815,8 @@ MonoBehaviour:
     - Mode: 2
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.1021449
         T: 0.03448276
       - Distance: 0.21167293
@@ -1878,8 +1878,8 @@ MonoBehaviour:
     - Mode: 1
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.025779717
         T: 0.03448276
       - Distance: 0.100693285
@@ -1941,8 +1941,8 @@ MonoBehaviour:
     - Mode: 1
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.0050279903
         T: 0.03448276
       - Distance: 0.019660804
@@ -2004,8 +2004,8 @@ MonoBehaviour:
     - Mode: 3
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.039352767
         T: 0.03448276
       - Distance: 0.12685038
@@ -2170,12 +2170,12 @@ MonoBehaviour:
   - npcObj: {fileID: 8755730909407763916, guid: 4bb3827cdf622d24d8282b5c092957e0,
       type: 3}
     distancePercent: 0
-    walkSpeed: 1
+    walkSpeed: 5
     verticalSpawnOffset: 1
   - npcObj: {fileID: 1910715658157050221, guid: bc4407017df12db47b74ed6bb2030bdf,
       type: 3}
     distancePercent: 0
-    walkSpeed: 1
+    walkSpeed: 5
     verticalSpawnOffset: 1
   splinePath: {fileID: 728373556}
 --- !u!43 &765282030
