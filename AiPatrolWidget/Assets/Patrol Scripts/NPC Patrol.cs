@@ -61,15 +61,22 @@ public class NPCPatrol : MonoBehaviour
         NpcSpawning();
         foreach (var npc in spawnedNPCs) {
             //NPC Movement
-            // Vector3 newPos = splinePath.EvaluatePosition(distancePercent);
-            // newPos.y += instantiationYOffset;
-            // npc.transform.position = newPos;
+            Vector3 newPos = splinePath.EvaluatePosition(npc.distancePercent);
+            newPos.y += npc.verticalSpawnOffset;
+            npc.npcObj.transform.position = newPos;
 
-            // direction = getDirectionVector(distancePercent, distancePercent + stepLength);
-            // Quaternion rotation = Quaternion.LookRotation(direction);
-            // rotation.x = npc.transform.rotation.x;
-            // rotation.z = npc.transform.rotation.z;
-            // npc.transform.rotation = rotation;
+            direction = getDirectionVector(npc.distancePercent, npc.distancePercent + 0.01f);
+
+            //direction should only be zero if at the end of the spline.
+            if (direction != Vector3.zero) {
+                Quaternion rotation = Quaternion.LookRotation(direction);
+                rotation.x = npc.npcObj.transform.rotation.x;
+                rotation.z = npc.npcObj.transform.rotation.z;
+                npc.npcObj.transform.rotation = rotation;
+                npc.distancePercent += npc.walkSpeed * Time.deltaTime / splineLength;
+            }
+            //TODO: Rewrite knot detection so that it is seperate per npc.
+            //Also rewrite knot detection to be more consistent.
 
             //Knot Detection
             // float closestKnot = splinePath.Spline.ConvertIndexUnit<Spline>(distancePercent, PathIndexUnit.Knot);
