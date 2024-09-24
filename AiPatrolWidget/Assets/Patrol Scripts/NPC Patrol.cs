@@ -1,11 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Splines;
+
+//TODO: Setup custom editor component window to show editable knot interactions. (In a new script)
+
 
 public class NPCPatrol : MonoBehaviour
 {
@@ -18,13 +16,12 @@ public class NPCPatrol : MonoBehaviour
 
     [SerializeField]
     SplineContainer splinePath;
+    float splineLength;
 
     List<NPCInfo> spawnedNPCs = new List<NPCInfo>();
     float spawnTimer = 5f;
     float timeSinceLastSpawn = 0;
     int currentSpawnIndex = 0;
-
-    float splineLength;
 
     Vector3 direction;
     Vector3 firstPos, firstDir;
@@ -65,7 +62,9 @@ public class NPCPatrol : MonoBehaviour
             newPos.y += npc.verticalSpawnOffset;
             npc.npcObj.transform.position = newPos;
 
-            direction = getDirectionVector(npc.distancePercent, npc.distancePercent + 0.01f);
+            float newStepLength = npc.walkSpeed * Time.deltaTime / splineLength;
+
+            direction = getDirectionVector(npc.distancePercent, npc.distancePercent + newStepLength);
 
             //direction should only be zero if at the end of the spline.
             if (direction != Vector3.zero) {
@@ -73,7 +72,7 @@ public class NPCPatrol : MonoBehaviour
                 rotation.x = npc.npcObj.transform.rotation.x;
                 rotation.z = npc.npcObj.transform.rotation.z;
                 npc.npcObj.transform.rotation = rotation;
-                npc.distancePercent += npc.walkSpeed * Time.deltaTime / splineLength;
+                npc.distancePercent += newStepLength;
             }
             //TODO: Rewrite knot detection so that it is seperate per npc.
             //Also rewrite knot detection to be more consistent.
