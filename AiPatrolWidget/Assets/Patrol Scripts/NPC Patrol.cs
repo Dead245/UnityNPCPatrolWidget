@@ -60,9 +60,6 @@ public class NPCPatrol : MonoBehaviour
     {
         NpcSpawning();
         foreach (var npc in spawnedNPCs) {
-            //TODO: Rewrite knot detection and movement so that it is seperate per npc.
-            //Also rewrite knot detection to be more consistent.
-
             //NPC Movement
             // Vector3 newPos = splinePath.EvaluatePosition(distancePercent);
             // newPos.y += instantiationYOffset;
@@ -106,10 +103,13 @@ public class NPCPatrol : MonoBehaviour
         Vector3 _firstPos, _secondPos;
 
         _firstPos = splinePath.EvaluatePosition(firstPercent);
+
+        if(secondPercent > 1) secondPercent = 1;
+
         _secondPos = splinePath.EvaluatePosition(secondPercent);
 
         direction = _secondPos - _firstPos;
-
+        
         return direction;
     }
 
@@ -120,7 +120,15 @@ public class NPCPatrol : MonoBehaviour
             newOffset.y += npcList[currentSpawnIndex].verticalSpawnOffset;
 
             GameObject newNPC = Instantiate(npcList[currentSpawnIndex].npcObj, newOffset, Quaternion.LookRotation(firstDir));
-            spawnedNPCs.Add(npcList[currentSpawnIndex]);
+            
+            NPCInfo newInfo = new NPCInfo() {
+                distancePercent = 0,
+                npcObj = newNPC,
+                verticalSpawnOffset = npcList[currentSpawnIndex].verticalSpawnOffset,
+                walkSpeed = npcList[currentSpawnIndex].walkSpeed
+            };
+
+            spawnedNPCs.Add(newInfo);
 
             timeSinceLastSpawn = 0;
             

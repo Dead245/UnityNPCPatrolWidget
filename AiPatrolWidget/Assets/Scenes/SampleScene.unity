@@ -2170,12 +2170,12 @@ MonoBehaviour:
   - npcObj: {fileID: 8755730909407763916, guid: 4bb3827cdf622d24d8282b5c092957e0,
       type: 3}
     distancePercent: 0
-    walkSpeed: 5
+    walkSpeed: 1
     verticalSpawnOffset: 1
   - npcObj: {fileID: 1910715658157050221, guid: bc4407017df12db47b74ed6bb2030bdf,
       type: 3}
     distancePercent: 0
-    walkSpeed: 5
+    walkSpeed: 1
     verticalSpawnOffset: 1
   splinePath: {fileID: 728373556}
 --- !u!43 &765282030
@@ -5854,7 +5854,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28412
+  m_Name: pb_Mesh28414
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
