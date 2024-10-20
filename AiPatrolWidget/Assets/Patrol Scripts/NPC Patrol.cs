@@ -86,8 +86,10 @@ public class NPCPatrol : MonoBehaviour
                 npc.npcObj.transform.rotation = rotation;
             }
 
+            //Reset knot and distancePercent once over 1 full loop around the closed spline.
             if (splinePath.Spline.Closed && npc.distancePercent >= 1) {
                 npc.distancePercent -= 1;
+                npc.currentKnotProgress = 0; 
             }
 
             if (npc.distancePercent < 1 || splinePath.Spline.Closed) {
@@ -96,47 +98,11 @@ public class NPCPatrol : MonoBehaviour
 
             //New Knot Detection
             if (npc.currentKnotProgress < splinePath.Spline.Count-1) {
-                if (npc.distancePercent >= knotPercents[npc.currentKnotProgress + 1]) {
-                    
+                if (npc.distancePercent >= knotPercents[npc.currentKnotProgress + 1]) {    
                     npc.currentKnotProgress += 1;
-
-                    if (npc.currentKnotProgress > splinePath.Spline.Count && splinePath.Spline.Closed) {
-
-                    } else if (splinePath.Spline.Closed && npc.distancePercent > 1) {
-                        npc.currentKnotProgress = 0;
-                    }
-
-                    Debug.Log(npc.npcObj.name + "KnotProgress: " + npc.currentKnotProgress);
                 }
             }
-
-            //TODO: Rewrite knot detection so that it is seperate per npc.
-            //Also rewrite knot detection to be more consistent.
-
-            //Knot Detection
-            // float closestKnot = splinePath.Spline.ConvertIndexUnit<Spline>(distancePercent, PathIndexUnit.Knot);
-            // closestKnot = Mathf.RoundToInt(closestKnot); //Index of the closest knot on the spline
-
-            // Vector3 localNPCPosition = splinePath.transform.InverseTransformPoint(npc.transform.position);
-            // localNPCPosition.y -= instantiationYOffset;
-
-            //Activates if NPC is within 'knotRadius' range of the knot, using local spaces
-            // if (Vector3.Distance(knots[(int)closestKnot].Position, localNPCPosition) <= knotRadius)
-            // {
-            //     if ((int)closestKnot != lastActiveKnot)
-            //     {
-            //         activateKnotInteraction((int)closestKnot);
-            //     }
-            //     lastActiveKnot = (int)closestKnot;
-            // }
-
-            //Increase distance the NPC is along the spline (Divided by 2 to even out calculations along spline ends)
-            //distancePercent += (walkSpeed * Time.deltaTime / splineLength) / 2;
         }
-
-
-
-
 
     }
     Vector3 getDirectionVector(float firstPercent, float secondPercent)
