@@ -92,11 +92,12 @@ public class NPCPatrol : MonoBehaviour
                 npc.currentKnotProgress = 0; 
             }
 
+            //Increment the NPC's distancePercent by stepLength
             if (npc.distancePercent < 1 || splinePath.Spline.Closed) {
                 npc.distancePercent += newStepLength;
             }
 
-            //New Knot Detection
+            //Knot Progression Detection
             if (npc.currentKnotProgress < splinePath.Spline.Count-1) {
                 if (npc.distancePercent >= knotPercents[npc.currentKnotProgress + 1]) {    
                     npc.currentKnotProgress += 1;
