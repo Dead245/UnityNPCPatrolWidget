@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Splines;
 
 //TODO: Setup custom editor component window to show editable knot interactions. (In a new script)
@@ -27,6 +30,7 @@ public class NPCPatrol : MonoBehaviour
     Vector3 firstPos, firstDir;
 
     BezierKnot[] knots;
+    List<float> knotPercents = new List<float>();
 
     [System.Serializable]
     class NPCInfo {
@@ -38,6 +42,8 @@ public class NPCPatrol : MonoBehaviour
         public float walkSpeed = 5f;
         [Tooltip("Vertical Offset for when the NPC spawns, 0 means they spawn centered on the spline")]
         public float verticalSpawnOffset = 1f;
+
+        public int currentKnotProgress = 0;
     }
 
     void Start()
@@ -51,6 +57,12 @@ public class NPCPatrol : MonoBehaviour
         npcListLength = npcList.Length;
 
         knots = splinePath.Spline.ToArray();
+
+        for (int i = 0; i < knots.Length; i++)
+        {
+            float knotDistance = splinePath.Spline.ConvertIndexUnit<Spline>(i,PathIndexUnit.Knot,PathIndexUnit.Distance);
+            knotPercents.Add(knotDistance / splineLength);
+        }
     }
 
     void Update()
@@ -73,10 +85,31 @@ public class NPCPatrol : MonoBehaviour
                 rotation.z = npc.npcObj.transform.rotation.z;
                 npc.npcObj.transform.rotation = rotation;
             }
-            npc.distancePercent += newStepLength;
-            if (splinePath.Spline.Closed && npc.distancePercent > 1) {
+
+            if (splinePath.Spline.Closed && npc.distancePercent >= 1) {
                 npc.distancePercent -= 1;
             }
+
+            if (npc.distancePercent < 1 || splinePath.Spline.Closed) {
+                npc.distancePercent += newStepLength;
+            }
+
+            //New Knot Detection
+            if (npc.currentKnotProgress < splinePath.Spline.Count-1) {
+                if (npc.distancePercent >= knotPercents[npc.currentKnotProgress + 1]) {
+                    
+                    npc.currentKnotProgress += 1;
+
+                    if (npc.currentKnotProgress > splinePath.Spline.Count && splinePath.Spline.Closed) {
+
+                    } else if (splinePath.Spline.Closed && npc.distancePercent > 1) {
+                        npc.currentKnotProgress = 0;
+                    }
+
+                    Debug.Log(npc.npcObj.name + "KnotProgress: " + npc.currentKnotProgress);
+                }
+            }
+
             //TODO: Rewrite knot detection so that it is seperate per npc.
             //Also rewrite knot detection to be more consistent.
 
@@ -130,7 +163,7 @@ public class NPCPatrol : MonoBehaviour
             Vector3 newOffset = firstPos;
             newOffset.y += npcList[currentSpawnIndex].verticalSpawnOffset;
 
-            GameObject newNPC = Instantiate(npcList[currentSpawnIndex].npcObj, newOffset, Quaternion.LookRotation(firstDir));
+            GameObject newNPC = Instantiate(npcList[currentSpawnIndex].npcObj, newOffset, Quaternion.LookRotation(firstDir), this.gameObject.transform);
             
             NPCInfo newInfo = new NPCInfo() {
                 distancePercent = 0,
