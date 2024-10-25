@@ -1,51 +1,39 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Splines;
-using UnityEditor.TerrainTools;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace PatrolScripts
 {
-    [Serializable]
     public class NPCPatrol : MonoBehaviour
     {
-        [SerializeField]
-        int maxNpcs = 5;
+        //Gotta public these for the UMXL data binding, or setup public properties
+        public int maxNpcs;
 
-        NPCInfo[] npcList;
+        public NPCInfo[] npcList;
         int npcListLength;
 
-        SplineContainer splinePath = null;
+        public SplineContainer splinePath;
         float splineLength;
 
         List<NPCInfo> spawnedNPCs = new List<NPCInfo>();
-        float spawnTimer = 5f;
-        float timeSinceLastSpawn = 0;
-        int currentSpawnIndex = 0;
+        public float spawnTimer = 5f;
+        private float timeSinceLastSpawn = 0;
+        private int currentSpawnIndex = 0;
 
         Vector3 direction;
         Vector3 firstPos, firstDir;
 
-        BezierKnot[] knots;
+        public BezierKnot[] knots;
         List<float> knotPercents = new List<float>();
 
         [System.Serializable]
-        class NPCInfo
+        public class NPCInfo
         {
-            [Tooltip("Prefab of the NPC")]
             public GameObject npcObj = null;
-            [Tooltip("How far down the spline the NPC will spawn as a decimal percentage")]
             public float distancePercent = 0;
-            [Tooltip("How fast the NPC moves through the spline")]
             public float walkSpeed = 5f;
-            [Tooltip("Vertical Offset for when the NPC spawns, 0 means they spawn centered on the spline")]
             public float verticalSpawnOffset = 1f;
-            [Tooltip("The most recent knot on the spline the NPC has passed")]
             public int currentKnotProgress = 0;
         }
 
@@ -67,6 +55,7 @@ namespace PatrolScripts
                 float knotDistance = splinePath.Spline.ConvertIndexUnit<Spline>(i, PathIndexUnit.Knot, PathIndexUnit.Distance);
                 knotPercents.Add(knotDistance / splineLength);
             }
+
         }
 
         void Update()
@@ -168,17 +157,4 @@ namespace PatrolScripts
             timeSinceLastSpawn += Time.deltaTime;
         }
     }
-#if UNITY_EDITOR
-    [CustomEditor(typeof(NPCPatrol))]
-    class NPCPatrolEditor: Editor {
-        public override void OnInspectorGUI()
-        {
-            var npcPatrol = (NPCPatrol)target;
-            if (npcPatrol == null) return;
-
-            base.OnInspectorGUI();
-        }
-
-    }
-#endif
 }
