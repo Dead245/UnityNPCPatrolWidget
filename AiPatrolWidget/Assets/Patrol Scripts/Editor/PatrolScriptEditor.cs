@@ -10,12 +10,17 @@ namespace PatrolScripts
     [CustomEditor(typeof(NPCPatrol))]
     public class PatrolScriptEditor :Editor
     {
-        public VisualTreeAsset VisualTree;
+        public VisualTreeAsset visualTree;
 
+        private void OnEnable()
+        {
+            string path = "Assets/UXML/PatrolScriptVisualTree.uxml";
+            visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(path);
+        }
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new VisualElement();
-            VisualTree.CloneTree(root);
+            visualTree.CloneTree(root);
 
 
             SerializedObject serObj = new SerializedObject(target);
