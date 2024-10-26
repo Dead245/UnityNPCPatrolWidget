@@ -1693,7 +1693,7 @@ MonoBehaviour:
     verticalSpawnOffset: 1
     currentKnotProgress: 0
   splinePath: {fileID: 728373556}
-  spawnTimer: 10
+  spawnTimer: 2
   knots: []
 --- !u!43 &765282030
 Mesh:

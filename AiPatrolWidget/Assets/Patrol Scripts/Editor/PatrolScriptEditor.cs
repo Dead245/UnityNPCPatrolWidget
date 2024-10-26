@@ -22,11 +22,13 @@ namespace PatrolScripts
             VisualElement root = new VisualElement();
             visualTree.CloneTree(root);
 
-
+            
             SerializedObject serObj = new SerializedObject(target);
             root.Bind(serObj);
             return root;
-
+            
         }
+
+        
     }
 }

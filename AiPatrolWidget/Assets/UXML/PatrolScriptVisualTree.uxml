@@ -1,13 +1,15 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <engine:Label text="Patrol Script" double-click-selects-word="false" name="MainLabel" display-tooltip-when-elided="false" style="align-items: center; align-self: center; -unity-font-style: bold; -unity-text-align: middle-center; overflow: visible; opacity: 1; align-content: auto;" />
+    <engine:Label text="Patrol Script" double-click-selects-word="false" name="MainLabel" display-tooltip-when-elided="false" style="align-items: center; align-self: center; -unity-font-style: bold; -unity-text-align: middle-center; overflow: visible; opacity: 1; align-content: auto; height: 25px; font-size: 13px;" />
     <engine:VisualElement name="Box1" data-source-type="PatrolScripts.NPCPatrol, PatrolScripts" style="flex-grow: 1; height: 50%; flex-direction: column; flex-wrap: nowrap; align-self: auto; justify-content: space-evenly; -unity-font-style: normal;">
-        <editor:ObjectField label="Spline Container" data-source-path="splinePath" binding-path="splinePath" name="SplineInputField" tooltip="Your spline your NPCs will traverse." />
+        <editor:ObjectField label="Spline Field" name="SplineField" binding-path="splinePath" />
         <engine:SliderInt label="Maximum NPCs" high-value="50" direction="Horizontal" binding-path="maxNpcs" fill="true" show-input-field="true" inverted="false" low-value="1" value="0" name="MaxNpcSliderField" />
         <engine:Slider label="Spawn Timer" high-value="100" binding-path="spawnTimer" fill="true" show-input-field="true" tooltip="How Often in SECONDS an NPC is spawned onto the spline." low-value="0.1" />
     </engine:VisualElement>
-    <engine:VisualElement style="flex-grow: 1; justify-content: space-evenly;">
-        <engine:Foldout text="Spawnable NPCs" name="NPCListFoldout" enabled="true" tooltip="List of NPCs that can spawn.">
-            <engine:ListView binding-path="npcList" virtualization-method="DynamicHeight" show-border="false" reorderable="true" reorder-mode="Animated" show-alternating-row-backgrounds="None" name="ListView" />
-        </engine:Foldout>
+    <engine:VisualElement name="SpawnNPCListMainHolder" style="flex-grow: 1; flex-direction: row; height: 129px;">
+        <engine:VisualElement name="SpawnNPCListMainHolder" style="flex-grow: 1; height: 100%; width: 50%; align-items: stretch; align-content: auto; justify-content: flex-start; align-self: auto; flex-direction: column; flex-wrap: nowrap;">
+            <engine:Label text="Spawnable NPCs" name="Label" style="align-content: auto; text-overflow: clip; font-size: 13px; flex-direction: column; align-items: auto; -unity-text-align: upper-left; height: 18px; -unity-font-style: bold;" />
+            <engine:ListView binding-path="npcList" virtualization-method="DynamicHeight" show-border="true" reorderable="true" reorder-mode="Animated" show-alternating-row-backgrounds="All" name="NPCListView" focusable="true" enabled="true" show-bound-collection-size="false" show-add-remove-footer="true" show-foldout-header="false" horizontal-scrolling="false" />
+        </engine:VisualElement>
+        <engine:VisualElement name="NpcDisplayContainer" style="flex-grow: 1; width: 25%;" />
     </engine:VisualElement>
 </engine:UXML>
