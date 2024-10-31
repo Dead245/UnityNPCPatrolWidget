@@ -10,13 +10,13 @@ namespace PatrolScripts
         //Gotta public these for the UMXL data binding, or setup public properties
         public int maxNpcs;
 
-        public NPCInfo[] npcList;
+        public PatrolNPCInfo[] npcList;
         int npcListLength;
 
         public SplineContainer splinePath;
         float splineLength;
 
-        List<NPCInfo> spawnedNPCs = new List<NPCInfo>();
+        List<PatrolNPCInfo> spawnedNPCs = new List<PatrolNPCInfo>();
         public float spawnTimer = 5f;
         private float timeSinceLastSpawn = 0;
         private int currentSpawnIndex = 0;
@@ -28,13 +28,17 @@ namespace PatrolScripts
         List<float> knotPercents = new List<float>();
 
         [System.Serializable]
-        public class NPCInfo
+        public class PatrolNPCInfo
         {
             public GameObject npcObj = null;
             public float distancePercent = 0;
             public float walkSpeed = 5f;
             public float verticalSpawnOffset = 1f;
             public int currentKnotProgress = 0;
+
+            string getNPCName() {
+                return npcObj.name;
+            }
         }
 
         void Start()
@@ -133,7 +137,7 @@ namespace PatrolScripts
 
                 GameObject newNPC = Instantiate(npcList[currentSpawnIndex].npcObj, newOffset, Quaternion.LookRotation(firstDir), this.gameObject.transform);
 
-                NPCInfo newInfo = new NPCInfo()
+                PatrolNPCInfo newInfo = new PatrolNPCInfo()
                 {
                     distancePercent = 0,
                     npcObj = newNPC,

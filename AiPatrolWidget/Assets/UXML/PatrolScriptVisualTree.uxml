@@ -5,11 +5,10 @@
         <engine:SliderInt label="Maximum NPCs" high-value="50" direction="Horizontal" binding-path="maxNpcs" fill="true" show-input-field="true" inverted="false" low-value="1" value="0" name="MaxNpcSliderField" />
         <engine:Slider label="Spawn Timer" high-value="100" binding-path="spawnTimer" fill="true" show-input-field="true" tooltip="How Often in SECONDS an NPC is spawned onto the spline." low-value="0.1" />
     </engine:VisualElement>
-    <engine:VisualElement name="SpawnNPCListMainHolder" style="flex-grow: 1; flex-direction: row; height: 129px;">
-        <engine:VisualElement name="SpawnNPCListMainHolder" style="flex-grow: 1; height: 100%; width: 50%; align-items: stretch; align-content: auto; justify-content: flex-start; align-self: auto; flex-direction: column; flex-wrap: nowrap;">
-            <engine:Label text="Spawnable NPCs" name="Label" style="align-content: auto; text-overflow: clip; font-size: 13px; flex-direction: column; align-items: auto; -unity-text-align: upper-left; height: 18px; -unity-font-style: bold;" />
-            <engine:ListView binding-path="npcList" virtualization-method="DynamicHeight" show-border="true" reorderable="true" reorder-mode="Animated" show-alternating-row-backgrounds="All" name="NPCListView" focusable="true" enabled="true" show-bound-collection-size="false" show-add-remove-footer="true" show-foldout-header="false" horizontal-scrolling="false" />
+    <engine:VisualElement name="SpawnNPCListMainHolder" style="flex-grow: 1; flex-direction: row; height: 300px;">
+        <engine:VisualElement name="SpawnNPCListMainHolder" enabled="true" style="flex-grow: 1; height: auto; width: 50%; align-items: stretch; align-content: auto; justify-content: flex-start; align-self: auto; flex-direction: column; flex-wrap: nowrap; min-height: auto;">
+            <engine:ListView binding-path="npcList" show-border="true" reorderable="true" reorder-mode="Animated" show-alternating-row-backgrounds="ContentOnly" name="NPCListView" focusable="true" enabled="true" show-add-remove-footer="true" show-foldout-header="false" header-title="Spawnable NPCS:" virtualization-method="DynamicHeight" show-bound-collection-size="false" item-template="project://database/Assets/UXML/NPCInfoPropertyDrawer.uxml?fileID=9197481963319205126&amp;guid=988d78dc93a2b624a80dd6de694b07ba&amp;type=3#NPCInfoPropertyDrawer" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: auto; flex-shrink: 1;" />
         </engine:VisualElement>
-        <engine:VisualElement name="NpcDisplayContainer" style="flex-grow: 1; width: 25%;" />
+        <engine:VisualElement name="NpcDisplayContainer" style="flex-grow: 1; width: 25%; height: auto;" />
     </engine:VisualElement>
 </engine:UXML>
