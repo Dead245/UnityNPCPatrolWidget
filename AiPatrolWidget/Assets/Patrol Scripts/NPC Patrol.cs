@@ -7,7 +7,7 @@ namespace PatrolScripts
 {
     public class NPCPatrol : MonoBehaviour
     {
-        //Gotta public these for the UMXL data binding, or setup public properties
+        //Gotta public these for the UMXL data editor binding, or setup public properties
         public int maxNpcs;
 
         public PatrolNPCInfo[] npcList;

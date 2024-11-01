@@ -1,6 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <editor:ObjectField label="NPC Object" binding-path="npcObj" name="NpcObjectField" />
-    <engine:Foldout text="Options">
+    <engine:Foldout text="Options" focusable="false" toggle-on-label-click="true" value="false">
         <engine:Slider label="Walk Speed" value="42" high-value="50" binding-path="walkSpeed" fill="true" low-value="0.1" show-input-field="true" inverted="false" direction="Horizontal" name="walkSpeedSlider" />
         <engine:FloatField label="Spawn Offset" value="42.2" name="offsetFloatField" binding-path="verticalSpawnOffset" tooltip="Vertical offset of NPC Object." style="align-items: auto; justify-content: flex-start; align-self: auto; align-content: auto;" />
     </engine:Foldout>

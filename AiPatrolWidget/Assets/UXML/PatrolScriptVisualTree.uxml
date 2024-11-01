@@ -9,6 +9,6 @@
         <engine:VisualElement name="SpawnNPCListMainHolder" enabled="true" style="flex-grow: 1; height: auto; width: 50%; align-items: stretch; align-content: auto; justify-content: flex-start; align-self: auto; flex-direction: column; flex-wrap: nowrap; min-height: auto;">
             <engine:ListView binding-path="npcList" show-border="true" reorderable="true" reorder-mode="Animated" show-alternating-row-backgrounds="ContentOnly" name="NPCListView" focusable="true" enabled="true" show-add-remove-footer="true" show-foldout-header="false" header-title="Spawnable NPCS:" virtualization-method="DynamicHeight" show-bound-collection-size="false" item-template="project://database/Assets/UXML/NPCInfoPropertyDrawer.uxml?fileID=9197481963319205126&amp;guid=988d78dc93a2b624a80dd6de694b07ba&amp;type=3#NPCInfoPropertyDrawer" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: auto; flex-shrink: 1;" />
         </engine:VisualElement>
-        <engine:VisualElement name="NpcDisplayContainer" style="flex-grow: 1; width: 25%; height: auto; background-image: none;" />
+        <engine:VisualElement name="NpcDisplayContainer" style="flex-grow: 1; width: 25%; height: auto; background-size: 80% 80%; background-position-x: center 0; background-position-y: top 0; background-image: url(&quot;project://database/Packages/com.unity.collab-proxy/Editor/PlasticSCM/Assets/Images/d_iconconflicted@2x.png?fileID=2800000&amp;guid=65f0e363b74cf5845ab8c3fbc14f39ac&amp;type=3#d_iconconflicted@2x&quot;);" />
     </engine:VisualElement>
 </engine:UXML>
