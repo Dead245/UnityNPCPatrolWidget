@@ -35,10 +35,6 @@ namespace PatrolScripts
             public float walkSpeed = 5f;
             public float verticalSpawnOffset = 1f;
             public int currentKnotProgress = 0;
-
-            string getNPCName() {
-                return npcObj.name;
-            }
         }
 
         void Start()
